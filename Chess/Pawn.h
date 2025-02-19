@@ -9,14 +9,15 @@ public:
 	{
 	}
 
-    bool isValidMove(int startRow, int startCol, int endRow, int endCol, ChessPiece* dest) const override {
+    bool isValidMove(int startRow, int startCol, int endRow, int endCol, ChessPiece* dest, vector<vector<ChessPiece*>> _board) const override {
         if (_color == "White") {
-            if (startCol == endCol && startRow - endRow == 1 && dest == nullptr)
+            if (startCol == endCol && startRow - endRow == 1 && dest == nullptr)// move up
                 return true;
-            if (startCol == endCol && startRow == 6 && endRow == 4 && dest == nullptr)
+			if (startCol == endCol && startRow == 6 && endRow == 4 && dest == nullptr)// move up 2
+                 return true;
+			if (abs(startCol - endCol) == 1 && startRow - endRow == 1 && isOpponent(dest))// attack
                 return true;
-            if (abs(startCol - endCol) == 1 && startRow - endRow == 1 && isOpponent(dest))
-                return true;
+            
         }
         else {
             if (startCol == endCol && endRow - startRow == 1 && dest == nullptr)

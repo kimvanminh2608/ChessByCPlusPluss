@@ -32,7 +32,15 @@ public:
 		}
 	}
 
-	//Create ChessPiece
+	//Create ChessPiece 8x8
+	//0 1 2 3 4 5 6 7
+	//1
+	//2
+	//3
+	//4
+	//5
+	//6
+	//7
 	void initializeBoard()
 	{
 		_board[0] = { new Rook("Black"), new Knight("Black"), new Bishop("Black"), new Queen("Black"),
@@ -40,10 +48,11 @@ public:
 		_board[1] = { new Pawn("Black"), new Pawn("Black"), new Pawn("Black"), new Pawn("Black"),
 					new Pawn("Black"), new Pawn("Black"), new Pawn("Black"), new Pawn("Black") };
 
-		_board[7] = { new Rook("White"), new Knight("White"), new Bishop("White"), new Queen("White"),
-					new King("White"), new Bishop("White"), new Knight("White"), new Rook("White") };
 		_board[6] = { new Pawn("White"), new Pawn("White"), new Pawn("White"), new Pawn("White"),
 					new Pawn("White"), new Pawn("White"), new Pawn("White"), new Pawn("White") };
+		_board[7] = { new Rook("White"), new Knight("White"), new Bishop("White"), new Queen("White"),
+					new King("White"), new Bishop("White"), new Knight("White"), new Rook("White") };
+		
 	}
 
 	//Print ChessBoard
@@ -82,7 +91,7 @@ public:
 			for (int col = 0; col < 8; ++col) {
 				ChessPiece* piece = _board[row][col];
 				if (piece != nullptr && piece->_color != color) {
-					if (piece->isValidMove(row, col, kingRow, kingCol, _board[kingRow][kingCol])) {
+					if (piece->isValidMove(row, col, kingRow, kingCol, _board[kingRow][kingCol], _board)) {
 						return true;
 					}
 				}
@@ -123,7 +132,7 @@ public:
 		ChessPiece* piece = _board[startRow][startCol];
 		ChessPiece* dest = _board[endRow][endCol];
 
-		if (piece != nullptr && piece->isValidMove(startRow, startCol, endRow, endCol, dest)) {
+		if (piece != nullptr && piece->isValidMove(startRow, startCol, endRow, endCol, dest, _board)) {
 			string playerColor = piece->_color;
 			if (!simulateMoveAndCheck(start, end, playerColor)) {
 				_board[endRow][endCol] = piece;
@@ -141,5 +150,7 @@ public:
 			cout << "Invalid move!" << endl;
 		}
 	}
+
+
 };
 

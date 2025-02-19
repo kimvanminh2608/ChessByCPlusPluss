@@ -15,7 +15,7 @@ public:
 		_color = color;
 	}
 	
-	virtual bool isValidMove(int startRow, int startCol, int endRow, int endCol, ChessPiece* dest) const = 0;
+	virtual bool isValidMove(int startRow, int startCol, int endRow, int endCol, ChessPiece* dest, vector<vector<ChessPiece*>> _board) const = 0;
 
 	bool isOpponent(const ChessPiece* other) const
 	{
