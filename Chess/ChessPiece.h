@@ -25,7 +25,7 @@ public:
 	string toString() const
 	{
 		if (_color == "Black") {
-			return "\033[31m" + _color.substr(0, 1) + _name.substr(0, 1) + "\033[0m"; // Red for black pieces
+			return "\033[31m" + _color.substr(0, 1) + _name.substr(0, 1) /*+ "\033[0m"*/; // Red for black pieces
 		}
 		else {
 			return _color.substr(0, 1) + _name.substr(0, 1);

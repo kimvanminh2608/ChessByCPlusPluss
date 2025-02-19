@@ -25,8 +25,10 @@ public:
 
 	~ChessBoard()
 	{
-		for (auto& row : _board) {
-			for (auto& piece : row) {
+		for (auto& row : _board) 
+		{
+			for (auto& piece : row) 
+			{
 				delete piece;
 			}
 		}
@@ -52,34 +54,53 @@ public:
 					new Pawn("White"), new Pawn("White"), new Pawn("White"), new Pawn("White") };
 		_board[7] = { new Rook("White"), new Knight("White"), new Bishop("White"), new Queen("White"),
 					new King("White"), new Bishop("White"), new Knight("White"), new Rook("White") };
-		
+
 	}
 
 	//Print ChessBoard
 	void printBoard()
 	{
-		for (int row = 0; row < 8; ++row) {
-			cout << (8 - row) << " ";
-			for (int col = 0; col < 8; ++col) {
-				if (_board[row][col] != nullptr) {
-					cout << _board[row][col]->toString() << " ";
+		bool isWhiteSquare = false;
+		for (int row = 0; row < 8; ++row)
+		{
+			for (int subRow = 0; subRow < 3; subRow++) // Each cell is 3 rows high
+			{
+				if (subRow == 1) {
+					cout << (8 - row) << " "; // Print row numbers on the middle sub-row
 				}
 				else {
-					cout << ".  ";
+					cout << "  "; // Indent for non-middle sub-rows
 				}
+				for (int col = 0; col < 8; ++col)
+				{
+					isWhiteSquare = (row + col) % 2 == 0;
+					string bgColor = isWhiteSquare ? "\033[102m" : "\033[44m"; // light green or Blue background
+					if (_board[row][col] != nullptr && subRow == 1)
+					{
+						cout << bgColor << "   " << _board[row][col]->toString() << " \033[0m";
+					}
+					else {
+						cout << bgColor << "   " << "   \033[0m";
+					}
+
+				}
+				cout << endl;
 			}
-			cout << endl;
+
 		}
-		cout << "   a  b  c  d  e  f  g  h" << endl;
+		cout << "    a      b     c     d     e     f     g     h" << endl;
 	}
 
 	// Check if any piece can attack the king
 	bool isKingInCheck(string color) {
 		int kingRow, kingCol;
 		// Find the king's position
-		for (int row = 0; row < 8; ++row) {
-			for (int col = 0; col < 8; ++col) {
-				if (_board[row][col] != nullptr && _board[row][col]->_name == "King" && _board[row][col]->_color == color) {
+		for (int row = 0; row < 8; ++row)
+		{
+			for (int col = 0; col < 8; ++col)
+			{
+				if (_board[row][col] != nullptr && _board[row][col]->_name == "King" && _board[row][col]->_color == color)
+				{
 					kingRow = row;
 					kingCol = col;
 					break;
@@ -87,10 +108,13 @@ public:
 			}
 		}
 		// Check if any opponent piece can attack the king
-		for (int row = 0; row < 8; ++row) {
-			for (int col = 0; col < 8; ++col) {
+		for (int row = 0; row < 8; ++row)
+		{
+			for (int col = 0; col < 8; ++col)
+			{
 				ChessPiece* piece = _board[row][col];
-				if (piece != nullptr && piece->_color != color) {
+				if (piece != nullptr && piece->_color != color)
+				{
 					if (piece->isValidMove(row, col, kingRow, kingCol, _board[kingRow][kingCol], _board)) {
 						return true;
 					}
@@ -131,22 +155,29 @@ public:
 
 		ChessPiece* piece = _board[startRow][startCol];
 		ChessPiece* dest = _board[endRow][endCol];
+		cout << "Moving " << piece->_name << endl;
 
-		if (piece != nullptr && piece->isValidMove(startRow, startCol, endRow, endCol, dest, _board)) {
+		if (piece != nullptr && piece->isValidMove(startRow, startCol, endRow, endCol, dest, _board)) 
+		{
 			string playerColor = piece->_color;
-			if (!simulateMoveAndCheck(start, end, playerColor)) {
+			bool test = simulateMoveAndCheck(start, end, playerColor);
+			if (!test) 
+			{
 				_board[endRow][endCol] = piece;
 				_board[startRow][startCol] = nullptr;
 
-				if (isKingInCheck(piece->_color == "White" ? "Black" : "White")) {
+				if (isKingInCheck(piece->_color == "White" ? "Black" : "White")) 
+				{
 					cout << "Check!" << endl;
 				}
 			}
-			else {
+			else 
+			{
 				cout << "Invalid move! Your King would be in check." << endl;
 			}
 		}
-		else {
+		else 
+		{
 			cout << "Invalid move!" << endl;
 		}
 	}
